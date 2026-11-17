@@ -1,16 +1,22 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="theme-color" content="#071b16"><title>Batalha Florestal</title>
-<link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#071b16">
+<title>Batalha Florestal</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
 <style>
-:root{--bg:#071b16;--panel:#102820;--panel2:#16362b;--green:#a3f26b;--mint:#45d6a2;--text:#f2f8f2;--muted:#9ab4a6;--line:#29483b;--red:#ff7777;--gold:#ffd66b}
-*{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse at 80% 0%,#17422e 0,transparent 40%),var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;min-height:100vh}button,input{font:inherit}button{cursor:pointer;border:0}.wrap{max-width:1080px;margin:auto;padding:26px 18px 60px}.top{display:flex;align-items:center;justify-content:space-between;margin-bottom:32px}.brand{display:flex;align-items:center;gap:12px;font-family:'Space Grotesk';font-weight:700;font-size:21px}.logo{width:42px;height:42px;border-radius:14px;background:linear-gradient(135deg,var(--green),var(--mint));display:grid;place-items:center;color:#092017;font-size:24px}.tag{color:var(--muted);font-size:12px;letter-spacing:2px;text-transform:uppercase}.screen{display:none}.screen.active{display:block}.hero{text-align:center;padding:38px 0 28px}.hero h1{font:700 clamp(38px,7vw,66px)/1 'Space Grotesk';margin:10px 0 16px;letter-spacing:-2px}.hero h1 span{color:var(--green)}.hero p{color:var(--muted);max-width:570px;margin:auto;line-height:1.65}.panel{background:linear-gradient(145deg,rgba(22,54,43,.96),rgba(13,37,29,.96));border:1px solid var(--line);border-radius:24px;padding:26px;box-shadow:0 20px 70px #0003}.homegrid{display:grid;grid-template-columns:1fr 1fr;gap:18px;max-width:780px;margin:10px auto}.panel h2{font:700 23px 'Space Grotesk';margin:0 0 8px}.muted{color:var(--muted)}.field{width:100%;background:#071b16;border:1px solid var(--line);border-radius:13px;padding:15px;color:white;outline:none;margin:10px 0}.field:focus{border-color:var(--green)}.btn{background:var(--green);color:#092017;padding:14px 19px;border-radius:13px;font-weight:800;width:100%;transition:.2s}.btn:hover{transform:translateY(-2px);filter:brightness(1.05)}.btn.secondary{background:#244638;color:var(--text);border:1px solid #39634f}.btn:disabled{opacity:.4;cursor:not-allowed;transform:none}.smallbtn{padding:9px 13px;border-radius:10px;background:#244638;color:white;font-weight:700}.row{display:flex;gap:10px;align-items:center}.row>*{flex:1}.avatargrid{display:grid;grid-template-columns:repeat(6,1fr);gap:8px;margin:12px 0 18px}.avatar{background:#0a2119;border:1px solid var(--line);border-radius:13px;padding:10px;font-size:25px}.avatar.selected{border:2px solid var(--green);background:#1c4934}.roomhead{display:flex;justify-content:space-between;gap:15px;align-items:center;flex-wrap:wrap}.pin{font:700 30px 'Space Grotesk';letter-spacing:6px;color:var(--green)}.pill{background:#234738;color:#c9f8d7;padding:7px 12px;border-radius:30px;font-size:12px;font-weight:700}.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:20px 0}.stat{background:#0a2119;border:1px solid var(--line);border-radius:15px;padding:14px}.stat strong{font:700 25px 'Space Grotesk';display:block}.stat span{font-size:12px;color:var(--muted)}.players{display:grid;grid-template-columns:repeat(auto-fill,minmax(145px,1fr));gap:8px;margin:14px 0}.playerchip{background:#0a2119;border:1px solid var(--line);padding:10px;border-radius:12px;display:flex;gap:8px;align-items:center;font-size:13px}.playerchip b{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.questiontop{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:20px}.timer{font:700 28px 'Space Grotesk';color:var(--green)}.track{height:7px;background:#29483b;border-radius:9px;overflow:hidden;margin:12px 0 22px}.track>div{height:100%;background:var(--green);width:100%;transition:width 1s linear}.qtext{font:700 clamp(22px,4vw,34px)/1.3 'Space Grotesk';margin:16px 0 24px}.answers{display:grid;grid-template-columns:1fr 1fr;gap:12px}.answer{background:#173c2d;border:1px solid #38614b;color:white;padding:18px;border-radius:15px;text-align:left;font-weight:700;min-height:72px}.answer:hover{border-color:var(--green);background:#20523b}.answer.chosen{background:#a3f26b;color:#092017;border-color:#a3f26b}.answer:disabled{opacity:.65;cursor:default}.notice{padding:15px;border-radius:13px;background:#183e30;border:1px solid #3e7655;color:#d9ffe4;margin:15px 0}.levels{display:grid;grid-template-columns:repeat(4,1fr);gap:9px;margin:15px 0}.level{background:#0a2119;border:1px solid var(--line);padding:13px 8px;border-radius:13px;color:white}.level.active{border:2px solid var(--green);background:#1c4934}.level b{display:block;margin-bottom:5px}.level small{color:var(--muted)}.hostboard{max-height:330px;overflow:auto}.boardrow{display:flex;justify-content:space-between;padding:11px;border-bottom:1px solid var(--line)}.podium{display:flex;justify-content:center;align-items:end;gap:10px;margin:30px auto;max-width:600px}.pod{flex:1;text-align:center;border-radius:17px 17px 7px 7px;padding:18px 8px;background:#244638}.pod.first{height:190px;background:linear-gradient(#80652b,#3e492b);order:2}.pod.second{height:150px;order:1}.pod.third{height:125px;order:3}.medal{font-size:34px}.pod strong{display:block;margin:8px 0}.hidden{display:none!important}.foot{text-align:center;color:#668a78;font-size:12px;margin-top:25px}@media(max-width:650px){.homegrid{grid-template-columns:1fr}.answers{grid-template-columns:1fr}.avatargrid{grid-template-columns:repeat(6,1fr)}.levels{grid-template-columns:repeat(2,1fr)}.panel{padding:19px}.stats{gap:7px}.stat{padding:10px}.stat strong{font-size:21px}}
+:root{--bg:#071b16;--panel:#102820;--green:#a3f26b;--mint:#45d6a2;--text:#f2f8f2;--muted:#9ab4a6;--line:#29483b}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse at 80% 0%,#17422e 0,transparent 40%),var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;min-height:100vh}button,input{font:inherit}button{cursor:pointer;border:0}.wrap{max-width:1080px;margin:auto;padding:26px 18px 60px}.top{display:flex;align-items:center;justify-content:space-between;margin-bottom:32px;gap:12px}.brand{display:flex;align-items:center;gap:12px;font-family:'Space Grotesk';font-weight:700;font-size:21px}.logo{width:42px;height:42px;border-radius:14px;background:linear-gradient(135deg,var(--green),var(--mint));display:grid;place-items:center;color:#092017;font-size:24px}.tag{color:var(--muted);font-size:12px;letter-spacing:2px;text-transform:uppercase}.screen{display:none}.screen.active{display:block}.hero{text-align:center;padding:38px 0 28px}.hero h1{font:700 clamp(38px,7vw,66px)/1 'Space Grotesk';margin:10px 0 16px;letter-spacing:-2px}.hero h1 span{color:var(--green)}.hero p{color:var(--muted);max-width:570px;margin:auto;line-height:1.65}.panel{background:linear-gradient(145deg,rgba(22,54,43,.96),rgba(13,37,29,.96));border:1px solid var(--line);border-radius:24px;padding:26px;box-shadow:0 20px 70px #0003}.homegrid{display:grid;grid-template-columns:1fr 1fr;gap:18px;max-width:780px;margin:10px auto}.panel h2{font:700 23px 'Space Grotesk';margin:0 0 8px}.muted{color:var(--muted)}.field{width:100%;background:#071b16;border:1px solid var(--line);border-radius:13px;padding:15px;color:white;outline:none;margin:10px 0}.field:focus{border-color:var(--green)}.btn{background:var(--green);color:#092017;padding:14px 19px;border-radius:13px;font-weight:800;width:100%;transition:.2s}.btn:hover{transform:translateY(-2px);filter:brightness(1.05)}.btn.secondary{background:#244638;color:var(--text);border:1px solid #39634f}.btn:disabled{opacity:.4;cursor:not-allowed;transform:none}.avatargrid{display:grid;grid-template-columns:repeat(6,1fr);gap:8px;margin:12px 0 18px}.avatar{background:#0a2119;border:1px solid var(--line);border-radius:13px;padding:10px;font-size:25px}.avatar.selected{border:2px solid var(--green);background:#1c4934}.roomhead{display:flex;justify-content:space-between;gap:15px;align-items:center;flex-wrap:wrap}.pin{font:700 30px 'Space Grotesk';letter-spacing:6px;color:var(--green)}.pill{background:#234738;color:#c9f8d7;padding:7px 12px;border-radius:30px;font-size:12px;font-weight:700}.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:20px 0}.stat{background:#0a2119;border:1px solid var(--line);border-radius:15px;padding:14px}.stat strong{font:700 25px 'Space Grotesk';display:block}.stat span{font-size:12px;color:var(--muted)}.players{display:grid;grid-template-columns:repeat(auto-fill,minmax(145px,1fr));gap:8px;margin:14px 0}.playerchip{background:#0a2119;border:1px solid var(--line);padding:10px;border-radius:12px;display:flex;gap:8px;align-items:center;font-size:13px}.playerchip b{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.questiontop{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:20px}.timer{font:700 28px 'Space Grotesk';color:var(--green)}.track{height:7px;background:#29483b;border-radius:9px;overflow:hidden;margin:12px 0 22px}.track>div{height:100%;background:var(--green);width:100%;transition:width 1s linear}.qtext{font:700 clamp(22px,4vw,34px)/1.3 'Space Grotesk';margin:16px 0 24px}.answers{display:grid;grid-template-columns:1fr 1fr;gap:12px}.answer{background:#173c2d;border:1px solid #38614b;color:white;padding:18px;border-radius:15px;text-align:left;font-weight:700;min-height:72px}.answer:hover{border-color:var(--green);background:#20523b}.answer.chosen{background:#a3f26b;color:#092017;border-color:#a3f26b}.answer:disabled{opacity:.65;cursor:default}.notice{padding:15px;border-radius:13px;background:#183e30;border:1px solid #3e7655;color:#d9ffe4;margin:15px 0}.levels{display:grid;grid-template-columns:repeat(4,1fr);gap:9px;margin:15px 0}.level{background:#0a2119;border:1px solid var(--line);padding:13px 8px;border-radius:13px;color:white}.level.active{border:2px solid var(--green);background:#1c4934}.level b{display:block;margin-bottom:5px}.level small{color:var(--muted)}.hostboard{max-height:330px;overflow:auto}.boardrow{display:flex;justify-content:space-between;gap:12px;padding:11px;border-bottom:1px solid var(--line)}.podium{display:flex;justify-content:center;align-items:end;gap:10px;margin:30px auto;max-width:600px}.pod{flex:1;text-align:center;border-radius:17px 17px 7px 7px;padding:18px 8px;background:#244638}.pod.first{height:190px;background:linear-gradient(#80652b,#3e492b);order:2}.pod.second{height:150px;order:1}.pod.third{height:125px;order:3}.medal{font-size:34px}.pod strong{display:block;margin:8px 0}.hidden{display:none!important}.foot{text-align:center;color:#668a78;font-size:12px;margin-top:25px}
+@media(max-width:650px){.homegrid{grid-template-columns:1fr}.answers{grid-template-columns:1fr}.levels{grid-template-columns:repeat(2,1fr)}.panel{padding:19px}.stats{gap:7px}.stat{padding:10px}.stat strong{font-size:21px}.top{align-items:flex-start}.top>.pill{font-size:10px}}
 </style>
 </head>
-<body><div class="wrap">
+<body>
+<div class="wrap">
 <header class="top"><div class="brand"><div class="logo">🌳</div><div>BATALHA <span style="color:var(--green)">FLORESTAL</span><div class="tag">Desafio de matemática</div></div></div><div class="pill">● MULTIPLAYER ONLINE</div></header>
+
 <section id="home" class="screen active">
  <div class="hero"><div class="tag">Conhecimento • Estratégia • Floresta</div><h1>O desafio é<br><span>seu território.</span></h1><p>Entre na arena, resolva desafios da Engenharia Florestal e conquiste seu lugar no pódio. Até 36 jogadores por sala.</p></div>
  <div class="homegrid">
@@ -18,66 +24,263 @@
   <div class="panel"><h2>🚀 Entrar na partida</h2><p class="muted">Digite o PIN de 6 números enviado pelo anfitrião.</p><input id="joinPin" class="field" inputmode="numeric" maxlength="6" placeholder="000000"><input id="playerName" class="field" maxlength="18" placeholder="Seu nome"><button id="joinBtn" class="btn secondary">ENTRAR NA SALA</button></div>
  </div><div id="homeMsg" class="notice hidden"></div>
 </section>
+
 <section id="avatarScreen" class="screen"><div class="panel" style="max-width:650px;margin:auto"><div class="tag">Personalize seu jogador</div><h2>Escolha seu avatar</h2><p class="muted">Como você quer aparecer na arena?</p><div id="avatarGrid" class="avatargrid"></div><button id="confirmAvatar" class="btn">CONTINUAR</button></div></section>
+
 <section id="lobby" class="screen"><div class="panel"><div class="roomhead"><div><div class="tag">Sala de batalha • compartilhe o PIN</div><div id="roomPin" class="pin">000000</div></div><div class="pill" id="rolePill">JOGADOR</div></div><div class="stats"><div class="stat"><strong id="playerCount">0/36</strong><span>Jogadores</span></div><div class="stat"><strong id="lobbyStatus">Aguardando</strong><span>Status da sala</span></div><div class="stat"><strong>20s</strong><span>Por pergunta</span></div></div><div id="hostControls" class="hidden"><h2>🎯 Escolha o nível da partida</h2><p class="muted">Somente o anfitrião pode escolher o nível e avançar as questões.</p><div id="levelButtons" class="levels"></div><button id="startBtn" class="btn">INICIAR BATALHA</button></div><div id="waitingText" class="notice">Aguardando o anfitrião iniciar a partida...</div><h2>👥 Na sala</h2><div id="lobbyPlayers" class="players"></div></div></section>
-<section id="game" class="screen"><div class="panel"><div class="questiontop"><div><div class="tag" id="phaseLabel">FASE 1</div><span class="pill" id="levelLabel">NÍVEL</span></div><div class="timer" id="timer">20s</div></div><div class="track"><div id="timerBar"></div></div><div class="tag" id="questionNumber">QUESTÃO 1</div><div id="questionText" class="qtext"></div><div id="answerGrid" class="answers"></div><div id="answerNotice" class="notice hidden"></div><div id="hostGameControls" class="hidden"><div class="stats"><div class="stat"><strong id="answeredCount">0</strong><span>Responderam</span></div><div class="stat"><strong id="pendingCount">0</strong><span>Pendentes</span></div><div class="stat"><strong id="gamePlayerCount">0</strong><span>Na sala</span></div></div><div id="allAnswered" class="notice hidden">✅ Todos os jogadores responderam! O anfitrião já pode avançar.</div><button id="nextBtn" class="btn" disabled>PRÓXIMA QUESTÃO →</button><h2 style="margin-top:25px">🏆 Placar ao vivo (somente anfitrião)</h2><div id="hostBoard" class="hostboard"></div></div></div></section>
+
+<section id="game" class="screen"><div class="panel"><div class="questiontop"><div><div class="tag" id="phaseLabel">FASE 1</div><span class="pill" id="levelLabel">NÍVEL</span></div><div class="timer" id="timer">20s</div></div><div class="track"><div id="timerBar"></div></div><div class="tag" id="questionNumber">QUESTÃO 1</div><div id="questionText" class="qtext"></div><div id="answerGrid" class="answers"></div><div id="answerNotice" class="notice hidden"></div><div id="hostGameControls" class="hidden"><div class="stats"><div class="stat"><strong id="answeredCount">0</strong><span>Responderam</span></div><div class="stat"><strong id="pendingCount">0</strong><span>Pendentes</span></div><div class="stat"><strong id="gamePlayerCount">0</strong><span>Na sala</span></div></div><div id="allAnswered" class="notice hidden">✅ Todos os participantes responderam! O anfitrião já pode avançar.</div><div id="timeExpired" class="notice hidden">⏱️ O tempo terminou. O anfitrião já pode avançar.</div><button id="nextBtn" class="btn" disabled>PRÓXIMA QUESTÃO →</button><h2 style="margin-top:25px">🏆 Placar ao vivo (somente anfitrião)</h2><div id="hostBoard" class="hostboard"></div></div></div></section>
+
 <section id="podiumScreen" class="screen"><div class="hero"><div class="tag">Fim da competição</div><h1>O pódio da<br><span>floresta!</span></h1><p>Parabéns a todos que participaram da Batalha Florestal.</p></div><div id="podium" class="podium"></div><div class="panel" style="max-width:600px;margin:auto"><h2>Classificação final</h2><div id="finalBoard"></div><button id="homeBtn" class="btn secondary" style="margin-top:18px">VOLTAR AO INÍCIO</button></div></section>
 <div class="foot">BATALHA FLORESTAL • Aprender também é competir 🌱</div>
 </div>
-<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script><script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script><script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
 <script src="firebase-config.js"></script>
 <script>
-const $=id=>document.getElementById(id), avatars=['🌳','🌲','🌴','🌿','🍃','🦜','🐆','🦋','🐸','🦎','🦉','🐢','🦥','🐝','🌱','🍄','🪵','🌺'];
-const levels=[
-{name:'Explorador',desc:'Fundamentos',questions:[
-['Uma área de 2 hectares corresponde a quantos metros quadrados?', ['2.000 m²','20.000 m²','200.000 m²','2.000.000 m²'],1],
-['Uma muda cresce 30 cm em 6 meses. Qual o crescimento médio mensal?', ['3 cm','5 cm','6 cm','10 cm'],1],
-['Um terreno retangular mede 100 m por 50 m. Qual sua área?', ['500 m²','1.500 m²','5.000 m²','50.000 m²'],2],
-['Em uma escala 1:10.000, 1 cm no mapa representa:', ['10 m','100 m','1.000 m','10.000 m'],1]
-]},
-{name:'Técnico',desc:'Aplicações',questions:[
-['Um talhão de 4 ha terá espaçamento de 3 m × 2 m. Aproximadamente quantas mudas serão necessárias?', ['3.333','6.667','10.000','20.000'],1],
-['Uma parcela de 20 m × 25 m possui área de:', ['250 m²','400 m²','500 m²','1.000 m²'],2],
-['Em um inventário, foram medidos 12, 15, 18, 15 e 20 cm de DAP. Qual é a média?', ['15 cm','16 cm','17 cm','18 cm'],1],
-['Uma área de 12 ha teve 25% desmatados. Quantos hectares foram desmatados?', ['2 ha','3 ha','4 ha','6 ha'],1]
-]},
-{name:'Engenheiro',desc:'Cálculo florestal',questions:[
-['Uma árvore tem DAP de 40 cm. Usando π = 3,14, qual sua área basal aproximada?', ['0,0628 m²','0,1256 m²','0,5024 m²','1,256 m²'],1],
-['Um povoamento possui 500 árvores/ha e volume médio de 0,8 m³ por árvore. Qual o volume por hectare?', ['40 m³','200 m³','400 m³','800 m³'],2],
-['Uma parcela de 500 m² apresentou 2,5 m³ de madeira. Qual o volume extrapolado por hectare?', ['25 m³/ha','40 m³/ha','50 m³/ha','100 m³/ha'],2],
-['Uma árvore possui altura comercial de 18 m e área basal de 0,08 m². Pelo fator de forma 0,7, qual o volume?', ['0,504 m³','1,008 m³','1,44 m³','2,016 m³'],1]
-]},
-{name:'Especialista',desc:'Desafio avançado',questions:[
-['Em uma amostra de 0,1 ha foram contadas 23 árvores. Qual a densidade estimada por hectare?', ['23','115','230','2.300'],2],
-['Uma floresta tem volume inicial de 240 m³/ha. Após exploração, restam 156 m³/ha. Qual percentual do volume foi retirado?', ['25%','30%','35%','40%'],2],
-['O DAP de uma árvore é 30 cm e sua altura é 20 m. Com π=3,14 e fator de forma 0,65, estime o volume.', ['0,459 m³','0,918 m³','1,413 m³','2,827 m³'],1],
-['Uma área de 18 ha será dividida em parcelas de 30 m × 20 m. Quantas parcelas cabem na área, sem considerar bordas?', ['150','250','300','350'],2]
-]}];
-let db,uid,roomId=null,isHost=false,myName='',myAvatar=avatars[0],unsubs=[],currentRoom=null,selectedLevel=0,questionTimer=null,seconds=20,hasAnswered=false,hostPlayers=[],questionIndex=0,lastRenderedQuestion=-1;
-function show(id){document.querySelectorAll('.screen').forEach(x=>x.classList.remove('active'));$(id).classList.add('active')}
+'use strict';
+const $ = id => document.getElementById(id);
+const avatars = ['🌳','🌲','🌴','🌿','🍃','🦜','🐆','🦋','🐸','🦎','🦉','🐢','🦥','🐝','🌱','🍄','🪵','🌺'];
+const levels = [
+ {name:'Explorador',desc:'Fundamentos',questions:[
+  ['Uma área de 2 hectares corresponde a quantos metros quadrados?',['2.000 m²','20.000 m²','200.000 m²','2.000.000 m²'],1],
+  ['Uma muda cresce 30 cm em 6 meses. Qual o crescimento médio mensal?',['3 cm','5 cm','6 cm','10 cm'],1],
+  ['Um terreno retangular mede 100 m por 50 m. Qual sua área?',['500 m²','1.500 m²','5.000 m²','50.000 m²'],2],
+  ['Em uma escala 1:10.000, 1 cm no mapa representa:',['10 m','100 m','1.000 m','10.000 m'],1]
+ ]},
+ {name:'Técnico',desc:'Aplicações',questions:[
+  ['Um talhão de 4 ha terá espaçamento de 3 m × 2 m. Aproximadamente quantas mudas serão necessárias?',['3.333','6.667','10.000','20.000'],2],
+  ['Uma parcela de 20 m × 25 m possui área de:',['250 m²','400 m²','500 m²','1.000 m²'],2],
+  ['Em um inventário, foram medidos 12, 15, 18, 15 e 20 cm de DAP. Qual é a média?',['15 cm','16 cm','17 cm','18 cm'],1],
+  ['Uma área de 12 ha teve 25% desmatados. Quantos hectares foram desmatados?',['2 ha','3 ha','4 ha','6 ha'],1]
+ ]},
+ {name:'Engenheiro',desc:'Cálculo florestal',questions:[
+  ['Uma árvore tem DAP de 40 cm. Usando π = 3,14, qual sua área basal aproximada?',['0,0628 m²','0,1256 m²','0,5024 m²','1,256 m²'],1],
+  ['Um povoamento possui 500 árvores/ha e volume médio de 0,8 m³ por árvore. Qual o volume por hectare?',['40 m³','200 m³','400 m³','800 m³'],2],
+  ['Uma parcela de 500 m² apresentou 2,5 m³ de madeira. Qual o volume extrapolado por hectare?',['25 m³/ha','40 m³/ha','50 m³/ha','100 m³/ha'],2],
+  ['Uma árvore possui altura comercial de 18 m e área basal de 0,08 m². Pelo fator de forma 0,7, qual o volume?',['0,504 m³','1,008 m³','1,44 m³','2,016 m³'],1]
+ ]},
+ {name:'Especialista',desc:'Desafio avançado',questions:[
+  ['Em uma amostra de 0,1 ha foram contadas 23 árvores. Qual a densidade estimada por hectare?',['23','115','230','2.300'],2],
+  ['Uma floresta tem volume inicial de 240 m³/ha. Após exploração, restam 156 m³/ha. Qual percentual do volume foi retirado?',['25%','30%','35%','40%'],2],
+  ['O DAP de uma árvore é 30 cm e sua altura é 20 m. Com π=3,14 e fator de forma 0,65, estime o volume.',['0,459 m³','0,918 m³','1,413 m³','2,827 m³'],1],
+  ['Uma área de 18 ha será dividida em parcelas de 30 m × 20 m. Quantas parcelas cabem na área, sem considerar bordas?',['150','250','300','350'],2]
+ ]}
+];
+
+let db, uid, roomId = null, isHost = false, myName = '', myAvatar = avatars[0];
+let unsubs = [], currentRoom = null, selectedLevel = 0, questionTimer = null;
+let seconds = 20, hasAnswered = false, hostPlayers = [], lastRenderedQuestion = -1;
+let busy = false;
+
+function show(id){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));$(id).classList.add('active')}
 function msg(t){$('homeMsg').textContent=t;$('homeMsg').classList.remove('hidden')}
-function clearSubs(){unsubs.forEach(f=>f&&f());unsubs=[];clearInterval(questionTimer)}
-function setupFirebase(){if(!window.FIREBASE_CONFIG||!FIREBASE_CONFIG.apiKey||FIREBASE_CONFIG.apiKey.includes('COLE_'))throw Error('Configure o arquivo firebase-config.js com os dados do seu projeto Firebase.');if(!firebase.apps.length)firebase.initializeApp(FIREBASE_CONFIG);db=firebase.firestore();return firebase.auth().signInAnonymously()}
-function makePin(){return String(Math.floor(100000+Math.random()*900000))}
-function listenRoom(){unsubs.push(db.collection('rooms').doc(roomId).onSnapshot(s=>{if(!s.exists)return;currentRoom=s.data();renderRoom()}))}
-function listenPlayers(){if(!isHost)return;unsubs.push(db.collection('rooms').doc(roomId).collection('players').onSnapshot(s=>{hostPlayers=s.docs.map(d=>({id:d.id,...d.data()}));$('playerCount').textContent=hostPlayers.length+'/36';$('gamePlayerCount').textContent=hostPlayers.length;renderPlayers();if(currentRoom?.status==='playing')renderHostStatus()}))}
-function renderPlayers(){let list=isHost?hostPlayers:[];$('lobbyPlayers').innerHTML=isHost?list.map(p=>`<div class="playerchip"><span>${p.avatar||'🌳'}</span><b>${esc(p.name)}</b></div>`).join(''):`<div class="muted">Você entrou na sala. O anfitrião verá os participantes.</div>`}
 function esc(s){return String(s||'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
-function renderRoom(){if(!currentRoom)return;$('roomPin').textContent=roomId;$('lobbyStatus').textContent=currentRoom.status==='playing'?'Em jogo':currentRoom.status==='finished'?'Finalizada':'Aguardando';if(currentRoom.status==='playing'){if(!$('game').classList.contains('active'))show('game');if(lastRenderedQuestion!==currentRoom.questionIndex){hasAnswered=false;lastRenderedQuestion=currentRoom.questionIndex;renderQuestion()}}if(currentRoom.status==='finished'){show('podiumScreen');renderPodium()}}
-function renderHostStatus(){let participants=hostPlayers.filter(p=>p.id!==uid),total=participants.length,answered=participants.filter(p=>p.answered).length;$('answeredCount').textContent=answered;$('pendingCount').textContent=Math.max(0,total-answered);$('allAnswered').classList.toggle('hidden',!(total>0&&answered===total));$('nextBtn').disabled=!(total>0&&answered===total);$('hostBoard').innerHTML=[...hostPlayers].sort((a,b)=>(b.score||0)-(a.score||0)).map((p,i)=>`<div class="boardrow"><span>${i+1}. ${p.avatar||'🌳'} ${esc(p.name)}</span><b>${p.score||0} pts</b></div>`).join('')}
-function renderQuestion(){if(!currentRoom)return;let q=currentRoom.question;$('phaseLabel').textContent=`FASE ${currentRoom.level+1} • ${levels[currentRoom.level].name}`;$('levelLabel').textContent=levels[currentRoom.level].desc;$('questionNumber').textContent=`QUESTÃO ${currentRoom.questionIndex+1} DE ${levels[currentRoom.level].questions.length}`;$('questionText').textContent=q.text;$('answerGrid').innerHTML=q.options.map((a,i)=>`<button class="answer" data-i="${i}" ${hasAnswered?'disabled':''}>${String.fromCharCode(65+i)}. ${a}</button>`).join('');document.querySelectorAll('.answer').forEach(b=>b.addEventListener('click',()=>submitAnswer(+b.dataset.i)));$('hostGameControls').classList.toggle('hidden',!isHost);$('answerNotice').classList.toggle('hidden',!hasAnswered);$('answerNotice').textContent=hasAnswered?'✅ Resposta enviada! Aguarde os outros jogadores e o anfitrião.':'';seconds=20;updateTimer();clearInterval(questionTimer);questionTimer=setInterval(()=>{seconds--;updateTimer();if(seconds<=0){clearInterval(questionTimer);if(!hasAnswered&&!isHost)submitAnswer(-1)}},1000);if(isHost)renderHostStatus()}
-function updateTimer(){$('timer').textContent=seconds+'s';$('timerBar').style.width=(seconds/20*100)+'%'}
-async function submitAnswer(i){if(hasAnswered||isHost)return;hasAnswered=true;document.querySelectorAll('.answer').forEach(b=>{b.disabled=true;if(+b.dataset.i===i)b.classList.add('chosen')});$('answerNotice').classList.remove('hidden');$('answerNotice').textContent='✅ Resposta enviada! Aguarde o anfitrião.';try{await db.collection('rooms').doc(roomId).collection('players').doc(uid).update({answered:true,answerIndex:i,answeredAt:firebase.firestore.FieldValue.serverTimestamp()})}catch(e){console.error(e);$('answerNotice').textContent='Não foi possível enviar. Verifique sua conexão.'}}
-function renderPodium(){let source=(currentRoom&&currentRoom.finalPodium)||hostPlayers;let sorted=[...source].sort((a,b)=>(b.score||0)-(a.score||0)),top=sorted.slice(0,3),medals=['🥇','🥈','🥉'];$('podium').innerHTML=[1,0,2].map(i=>{let p=top[i];return p?`<div class="pod ${i===0?'first':i===1?'second':'third'}"><div class="medal">${medals[i]}</div><strong>${esc(p.name)}</strong>${p.score||0} pts</div>`:''}).join('');$('finalBoard').innerHTML=sorted.map((p,i)=>`<div class="boardrow"><span>${i+1}. ${p.avatar||'🌳'} ${esc(p.name)}</span><b>${p.score||0} pts</b></div>`).join('')}
-function renderLevels(){ $('levelButtons').innerHTML=levels.map((l,i)=>`<button class="level ${i===selectedLevel?'active':''}" data-level="${i}"><b>${i+1}. ${l.name}</b><small>${l.desc}</small></button>`).join('');document.querySelectorAll('.level').forEach(b=>b.onclick=()=>{selectedLevel=+b.dataset.level;renderLevels()})}
-$('avatarGrid').innerHTML=avatars.map((a,i)=>`<button class="avatar ${i===0?'selected':''}" data-a="${a}">${a}</button>`).join('');document.querySelectorAll('.avatar').forEach(b=>b.onclick=()=>{myAvatar=b.dataset.a;document.querySelectorAll('.avatar').forEach(x=>x.classList.toggle('selected',x===b))});
-$('createBtn').onclick=async()=>{try{myName=$('hostName').value.trim();if(!myName)throw Error('Digite seu nome.');await setupFirebase();uid=firebase.auth().currentUser.uid;isHost=true;myAvatar='🌳';let pin,ref;for(let n=0;n<8;n++){pin=makePin();ref=db.collection('rooms').doc(pin);if(!(await ref.get()).exists)break}roomId=pin;await ref.set({hostUid:uid,status:'lobby',level:0,questionIndex:0,question:null,playerCount:1,createdAt:firebase.firestore.FieldValue.serverTimestamp()});await ref.collection('players').doc(uid).set({uid,name:myName,avatar:myAvatar,score:0,answered:false,answerIndex:null});enterLobby()}catch(e){msg(e.message)}};
-$('joinBtn').onclick=async()=>{try{roomId=$('joinPin').value.trim();myName=$('playerName').value.trim();if(!/^\d{6}$/.test(roomId))throw Error('Digite um PIN válido de 6 números.');if(!myName)throw Error('Digite seu nome.');await setupFirebase();uid=firebase.auth().currentUser.uid;isHost=false;let ref=db.collection('rooms').doc(roomId),snap=await ref.get();if(!snap.exists)throw Error('Sala não encontrada. Confira o PIN.');if(snap.data().status!=='lobby')throw Error('Essa partida já começou ou terminou.');if((snap.data().playerCount||0)>=36)throw Error('Sala cheia! O limite é 36 jogadores.');show('avatarScreen')}catch(e){msg(e.message)}};
-$('confirmAvatar').onclick=async()=>{try{let ref=db.collection('rooms').doc(roomId);await db.runTransaction(async tx=>{let roomSnap=await tx.get(ref);if(!roomSnap.exists)throw Error('Sala não encontrada.');let data=roomSnap.data();if(data.status!=='lobby')throw Error('A partida já começou.');if((data.playerCount||0)>=36)throw Error('Sala cheia! Limite de 36 jogadores.');let playerRef=ref.collection('players').doc(uid);tx.set(playerRef,{uid,name:myName,avatar:myAvatar,score:0,answered:false,answerIndex:null});tx.update(ref,{playerCount:(data.playerCount||0)+1});});enterLobby()}catch(e){alert('Erro ao entrar: '+e.message)}};
-function enterLobby(){show('lobby');$('rolePill').textContent=isHost?'ANFITRIÃO':'JOGADOR';$('hostControls').classList.toggle('hidden',!isHost);$('waitingText').classList.toggle('hidden',isHost);$('roomPin').textContent=roomId;if(isHost)renderLevels();listenRoom();listenPlayers();if(!isHost)unsubs.push(db.collection('rooms').doc(roomId).collection('players').doc(uid).onSnapshot(s=>{if(s.exists&&currentRoom?.status==='playing'&&s.data().answered)hasAnswered=true}))}
-$('startBtn').onclick=async()=>{if(!isHost)return;let q=levels[selectedLevel].questions[0];await db.collection('rooms').doc(roomId).update({status:'playing',level:selectedLevel,questionIndex:0,question:{text:q[0],options:q[1]},startedAt:firebase.firestore.FieldValue.serverTimestamp()});await db.collection('rooms').doc(roomId).collection('private').doc('answer').set({correctIndex:q[2]});await resetAnswers();};
-async function resetAnswers(){let batch=db.batch();hostPlayers.forEach(p=>batch.update(db.collection('rooms').doc(roomId).collection('players').doc(p.id),{answered:false,answerIndex:null}));await batch.commit()}
-$('nextBtn').onclick=async()=>{if(!isHost)return;let roomRef=db.collection('rooms').doc(roomId),privateRef=roomRef.collection('private').doc('answer');let key=await privateRef.get(),correct=key.data().correctIndex;let batch=db.batch();hostPlayers.forEach(p=>{let points=(p.score||0)+(p.answerIndex===correct?100:0);batch.update(roomRef.collection('players').doc(p.id),{score:points,answered:false,answerIndex:null})});await batch.commit();let next=currentRoom.questionIndex+1;if(next>=levels[currentRoom.level].questions.length){let finalSnap=await roomRef.collection('players').get();let finalPodium=finalSnap.docs.map(d=>({name:d.data().name,avatar:d.data().avatar,score:d.data().score||0})).sort((a,b)=>b.score-a.score);await roomRef.update({status:'finished',finalPodium});return}let q=levels[currentRoom.level].questions[next];await privateRef.set({correctIndex:q[2]});await roomRef.update({questionIndex:next,question:{text:q[0],options:q[1]}});hasAnswered=false;};
+function clearSubs(){unsubs.forEach(fn=>{try{fn()}catch(e){}});unsubs=[];if(questionTimer)clearInterval(questionTimer)}
+function setupFirebase(){
+ if(!window.FIREBASE_CONFIG || !FIREBASE_CONFIG.apiKey) throw new Error('O arquivo firebase-config.js não está configurado.');
+ if(!firebase.apps.length) firebase.initializeApp(FIREBASE_CONFIG);
+ db=firebase.firestore();
+ return firebase.auth().signInAnonymously();
+}
+function makePin(){return String(Math.floor(100000+Math.random()*900000))}
+function roomRef(){return db.collection('rooms').doc(roomId)}
+function playerRef(id=uid){return roomRef().collection('players').doc(id)}
+function listenRoom(){
+ unsubs.push(roomRef().onSnapshot(s=>{
+  if(!s.exists){msg('A sala foi encerrada ou não existe mais.');show('home');return}
+  currentRoom=s.data();renderRoom();
+ },e=>msg('Erro ao acompanhar a sala: '+e.message)));
+}
+function listenPlayers(){
+ unsubs.push(roomRef().collection('players').onSnapshot(s=>{
+  hostPlayers=s.docs.map(d=>({id:d.id,...d.data()}));
+  $('playerCount').textContent=hostPlayers.length+'/36';
+  $('gamePlayerCount').textContent=hostPlayers.length;
+  renderPlayers();
+  if(isHost && currentRoom?.status==='playing') renderHostStatus();
+ },e=>console.error('Erro na lista de jogadores:',e)));
+}
+function renderPlayers(){
+ $('lobbyPlayers').innerHTML=hostPlayers.map(p=>`<div class="playerchip"><span>${p.avatar||'🌳'}</span><b>${esc(p.name)}${p.id===currentRoom?.hostUid?' (anfitrião)':''}</b></div>`).join('');
+}
+function renderRoom(){
+ if(!currentRoom)return;
+ $('roomPin').textContent=roomId;
+ $('lobbyStatus').textContent=currentRoom.status==='playing'?'Em jogo':currentRoom.status==='finished'?'Finalizada':'Aguardando';
+ if(currentRoom.status==='lobby'){show('lobby');return}
+ if(currentRoom.status==='playing'){
+  show('game');
+  if(lastRenderedQuestion!==currentRoom.questionIndex){
+   lastRenderedQuestion=currentRoom.questionIndex;hasAnswered=false;renderQuestion();
+  }
+ }
+ if(currentRoom.status==='finished'){if(questionTimer)clearInterval(questionTimer);show('podiumScreen');renderPodium()}
+}
+function renderHostStatus(){
+ const participants=hostPlayers.filter(p=>p.id!==currentRoom?.hostUid);
+ const total=participants.length;
+ const answered=participants.filter(p=>p.answered===true).length;
+ const allDone=total>0 && answered===total;
+ const expired=seconds<=0;
+ $('answeredCount').textContent=answered;
+ $('pendingCount').textContent=Math.max(0,total-answered);
+ $('allAnswered').classList.toggle('hidden',!allDone);
+ $('timeExpired').classList.toggle('hidden',!expired);
+ $('nextBtn').disabled=!(allDone||expired);
+ $('hostBoard').innerHTML=[...hostPlayers].sort((a,b)=>(b.score||0)-(a.score||0)).map((p,i)=>`<div class="boardrow"><span>${i+1}. ${p.avatar||'🌳'} ${esc(p.name)}${p.id===currentRoom?.hostUid?' · anfitrião':''}</span><b>${p.score||0} pts</b></div>`).join('');
+}
+function renderQuestion(){
+ if(!currentRoom?.question)return;
+ const q=currentRoom.question;
+ $('phaseLabel').textContent=`FASE ${currentRoom.level+1} • ${levels[currentRoom.level].name}`;
+ $('levelLabel').textContent=levels[currentRoom.level].desc;
+ $('questionNumber').textContent=`QUESTÃO ${currentRoom.questionIndex+1} DE ${levels[currentRoom.level].questions.length}`;
+ $('questionText').textContent=q.text;
+ $('answerGrid').innerHTML=q.options.map((a,i)=>`<button class="answer" data-i="${i}" ${hasAnswered||isHost?'disabled':''}>${String.fromCharCode(65+i)}. ${esc(a)}</button>`).join('');
+ document.querySelectorAll('.answer').forEach(b=>b.addEventListener('click',()=>submitAnswer(Number(b.dataset.i))));
+ $('hostGameControls').classList.toggle('hidden',!isHost);
+ $('answerNotice').classList.toggle('hidden',isHost||!hasAnswered);
+ $('answerNotice').textContent=hasAnswered?'✅ Resposta enviada! Aguarde os outros jogadores e o anfitrião.':'';
+ startQuestionClock();
+ if(isHost)renderHostStatus();
+}
+function startQuestionClock(){
+ if(questionTimer)clearInterval(questionTimer);
+ const started=currentRoom.questionStartedAt?.toMillis ? currentRoom.questionStartedAt.toMillis() : Date.now();
+ function tick(){
+  const elapsed=Math.floor((Date.now()-started)/1000);
+  seconds=Math.max(0,20-elapsed);
+  $('timer').textContent=seconds+'s';
+  $('timerBar').style.width=(seconds/20*100)+'%';
+  if(seconds<=0){
+   clearInterval(questionTimer);
+   if(!isHost&&!hasAnswered)submitAnswer(-1);
+   if(isHost)renderHostStatus();
+  }
+ }
+ tick();questionTimer=setInterval(tick,500);
+}
+async function submitAnswer(i){
+ if(hasAnswered||isHost||seconds<=0)return;
+ hasAnswered=true;
+ document.querySelectorAll('.answer').forEach(b=>{b.disabled=true;if(Number(b.dataset.i)===i)b.classList.add('chosen')});
+ $('answerNotice').classList.remove('hidden');
+ $('answerNotice').textContent='Enviando sua resposta...';
+ try{
+  await playerRef().update({answered:true,answerIndex:i,answeredAt:firebase.firestore.FieldValue.serverTimestamp()});
+  $('answerNotice').textContent='✅ Resposta enviada! Aguarde o anfitrião.';
+ }catch(e){hasAnswered=false;$('answerNotice').textContent='Não foi possível enviar. Verifique sua conexão.';console.error(e)}
+}
+function renderPodium(){
+ const source=currentRoom?.finalPodium||hostPlayers;
+ const sorted=[...source].sort((a,b)=>(b.score||0)-(a.score||0));
+ const top=sorted.slice(0,3),medals=['🥇','🥈','🥉'];
+ $('podium').innerHTML=[1,0,2].map(i=>{const p=top[i];return p?`<div class="pod ${i===0?'first':i===1?'second':'third'}"><div class="medal">${medals[i]}</div><strong>${esc(p.name)}</strong>${p.score||0} pts</div>`:''}).join('');
+ $('finalBoard').innerHTML=sorted.map((p,i)=>`<div class="boardrow"><span>${i+1}. ${p.avatar||'🌳'} ${esc(p.name)}</span><b>${p.score||0} pts</b></div>`).join('');
+}
+function renderLevels(){
+ $('levelButtons').innerHTML=levels.map((l,i)=>`<button class="level ${i===selectedLevel?'active':''}" data-level="${i}"><b>${i+1}. ${l.name}</b><small>${l.desc}</small></button>`).join('');
+ document.querySelectorAll('.level').forEach(b=>b.onclick=()=>{selectedLevel=Number(b.dataset.level);renderLevels()});
+}
+function renderAvatars(){
+ $('avatarGrid').innerHTML=avatars.map((a,i)=>`<button class="avatar ${i===0?'selected':''}" data-a="${a}">${a}</button>`).join('');
+ document.querySelectorAll('.avatar').forEach(b=>b.onclick=()=>{myAvatar=b.dataset.a;document.querySelectorAll('.avatar').forEach(x=>x.classList.toggle('selected',x===b))});
+}
+function enterLobby(){
+ show('lobby');$('rolePill').textContent=isHost?'ANFITRIÃO':'JOGADOR';
+ $('hostControls').classList.toggle('hidden',!isHost);$('waitingText').classList.toggle('hidden',isHost);
+ $('roomPin').textContent=roomId;if(isHost)renderLevels();
+ listenRoom();listenPlayers();
+ if(!isHost){
+  unsubs.push(playerRef().onSnapshot(s=>{
+   if(s.exists&&s.data().answered&&currentRoom?.status==='playing')hasAnswered=true;
+  },e=>console.error(e)));
+ }
+}
+renderAvatars();
+
+$('createBtn').onclick=async()=>{
+ if(busy)return;busy=true;$('createBtn').disabled=true;
+ try{
+  myName=$('hostName').value.trim();if(!myName)throw new Error('Digite seu nome.');
+  await setupFirebase();uid=firebase.auth().currentUser.uid;isHost=true;myAvatar='🌳';
+  let ref,pin,found=false;
+  for(let n=0;n<10;n++){pin=makePin();ref=db.collection('rooms').doc(pin);const snap=await ref.get();if(!snap.exists){found=true;break}}
+  if(!found)throw new Error('Não foi possível gerar um PIN. Tente novamente.');
+  roomId=pin;
+  await ref.set({hostUid:uid,status:'lobby',level:0,questionIndex:0,question:null,playerCount:1,createdAt:firebase.firestore.FieldValue.serverTimestamp()});
+  await ref.collection('players').doc(uid).set({uid,name:myName,avatar:myAvatar,score:0,answered:true,answerIndex:null,isHost:true});
+  enterLobby();
+ }catch(e){msg(e.message)}finally{busy=false;$('createBtn').disabled=false}
+};
+$('joinBtn').onclick=async()=>{
+ if(busy)return;busy=true;$('joinBtn').disabled=true;
+ try{
+  roomId=$('joinPin').value.trim();myName=$('playerName').value.trim();
+  if(!/^\d{6}$/.test(roomId))throw new Error('Digite um PIN válido de 6 números.');
+  if(!myName)throw new Error('Digite seu nome.');
+  await setupFirebase();uid=firebase.auth().currentUser.uid;isHost=false;
+  const snap=await roomRef().get();
+  if(!snap.exists)throw new Error('Sala não encontrada. Confira o PIN.');
+  if(snap.data().status!=='lobby')throw new Error('Essa partida já começou ou terminou.');
+  if((snap.data().playerCount||0)>=36)throw new Error('Sala cheia! O limite é 36 jogadores.');
+  show('avatarScreen');
+ }catch(e){msg(e.message)}finally{busy=false;$('joinBtn').disabled=false}
+};
+$('confirmAvatar').onclick=async()=>{
+ try{
+  const ref=roomRef();
+  await db.runTransaction(async tx=>{
+   const roomSnap=await tx.get(ref);if(!roomSnap.exists)throw new Error('Sala não encontrada.');
+   const data=roomSnap.data();if(data.status!=='lobby')throw new Error('A partida já começou.');
+   if((data.playerCount||0)>=36)throw new Error('Sala cheia! Limite de 36 jogadores.');
+   const player=ref.collection('players').doc(uid);
+   tx.set(player,{uid,name:myName,avatar:myAvatar,score:0,answered:false,answerIndex:null,isHost:false});
+   tx.update(ref,{playerCount:(data.playerCount||0)+1});
+  });
+  enterLobby();
+ }catch(e){alert('Erro ao entrar: '+e.message)}
+};
+$('startBtn').onclick=async()=>{
+ if(!isHost||busy)return;busy=true;$('startBtn').disabled=true;
+ try{
+  const q=levels[selectedLevel].questions[0],ref=roomRef();
+  await ref.collection('private').doc('answer').set({correctIndex:q[2]});
+  await ref.update({status:'playing',level:selectedLevel,questionIndex:0,question:{text:q[0],options:q[1]},questionStartedAt:firebase.firestore.FieldValue.serverTimestamp()});
+ }catch(e){alert('Não foi possível iniciar: '+e.message)}finally{busy=false;$('startBtn').disabled=false}
+};
+$('nextBtn').onclick=async()=>{
+ if(!isHost||busy||$('nextBtn').disabled)return;busy=true;$('nextBtn').disabled=true;
+ try{
+  const ref=roomRef(),privateRef=ref.collection('private').doc('answer');
+  const key=await privateRef.get();if(!key.exists)throw new Error('Gabarito não encontrado.');
+  const correct=key.data().correctIndex;
+  const snap=await ref.collection('players').get();
+  const batch=db.batch();
+  snap.docs.forEach(d=>{
+   const p=d.data();
+   const points=(p.score||0)+(!p.isHost&&p.answerIndex===correct?100:0);
+   batch.update(d.ref,{score:points,answered:p.isHost===true,answerIndex:null});
+  });
+  await batch.commit();
+  const next=currentRoom.questionIndex+1;
+  if(next>=levels[currentRoom.level].questions.length){
+   const finalSnap=await ref.collection('players').get();
+   const finalPodium=finalSnap.docs.map(d=>({name:d.data().name,avatar:d.data().avatar,score:d.data().score||0,isHost:d.data().isHost===true}))
+    .filter(p=>!p.isHost).sort((a,b)=>b.score-a.score);
+   await ref.update({status:'finished',finalPodium});
+  }else{
+   const q=levels[currentRoom.level].questions[next];
+   await privateRef.set({correctIndex:q[2]});
+   await ref.update({questionIndex:next,question:{text:q[0],options:q[1]},questionStartedAt:firebase.firestore.FieldValue.serverTimestamp()});
+  }
+ }catch(e){alert('Não foi possível avançar: '+e.message);console.error(e)}finally{busy=false}
+};
 $('homeBtn').onclick=()=>{clearSubs();location.reload()};
 window.addEventListener('beforeunload',clearSubs);
-</script></body></html>
+</script>
+</body>
+</html>
