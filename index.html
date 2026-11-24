@@ -130,12 +130,25 @@ function clearSubs(){
  unsubs=[];
  if(questionTimer)clearInterval(questionTimer);
 }
-function setupFirebase(){
- if(!window.FIREBASE_CONFIG || !FIREBASE_CONFIG.apiKey) throw new Error('O arquivo firebase-config.js não está configurado.');
- if(!firebase.apps.length) firebase.initializeApp(FIREBASE_CONFIG);
- db=firebase.firestore();
- return firebase.auth().signInAnonymously();
-}
+async function setupFirebase(){
+  const config = window.FIREBASE_CONFIG;
+
+  if (!config || !config.apiKey) {
+    throw new Error('Firebase config não carregou. Verifique firebase-config.js');
+  }
+
+  if (typeof firebase === 'undefined') {
+    throw new Error('Firebase não foi carregado.');
+  }
+
+  if (!firebase.apps.length) {
+    firebase.initializeApp(config);
+  }
+
+  db = firebase.firestore();
+
+  await firebase.auth().signInAnonymously();
+ }
 function makePin(){
  return String(Math.floor(100000+Math.random()*900000));
 }
