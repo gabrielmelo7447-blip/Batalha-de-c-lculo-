@@ -112,7 +112,7 @@ const levels = [
 ];
 let db, uid, roomId = null, isHost = false, myName = '', myAvatar = avatars[0];
 let unsubs = [], currentRoom = null, selectedLevel = 0, questionTimer = null;
-let seconds = 20, hasAnswered = false, hostPlayers = [], lastRenderedQuestion = -1;
+let seconds = 60, hasAnswered = false, hostPlayers = [], lastRenderedQuestion = -1;
 let busy = false;
 
 function show(id){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));$(id).classList.add('active')}
