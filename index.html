@@ -292,6 +292,7 @@ $('startBtn').onclick=async()=>{
   await ref.update({status:'playing',level:selectedLevel,questionIndex:0,question:{text:q[0],options:q[1]},questionStartedAt:firebase.firestore.FieldValue.serverTimestamp()});
  }catch(e){alert('Não foi possível iniciar: '+e.message)}finally{busy=false;$('startBtn').disabled=false}
 };
+$('nextBtn').onclick=async()=>{
  if(!isHost||busy||$('nextBtn').disabled)return;busy=true;$('nextBtn').disabled=true;
  try{
   const ref=roomRef(),privateRef=ref.collection('private').doc('answer');
