@@ -186,9 +186,19 @@ function renderPlayers(){
 
  const levelIndex=Number(currentRoom.level)||0;
  const questionIndex=Number(currentRoom.questionIndex)||0;
- const q=currentRoom.question;
+ const savedQuestion=currentRoom.question;
+const fallbackQuestion=levels[levelIndex]?.questions?.[questionIndex];
 
- if(!q || !Array.isArray(q.options)) return;
+const q=(savedQuestion && Array.isArray(savedQuestion.options))
+ ? savedQuestion
+ : fallbackQuestion
+  ? {text:fallbackQuestion[0],options:fallbackQuestion[1]}
+  : null;
+
+if(!q){
+ console.error('Pergunta não encontrada:',currentRoom);
+ return;
+}
 
  const questionKey=levelIndex+'-'+questionIndex;
 
