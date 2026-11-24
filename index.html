@@ -242,19 +242,72 @@ function enterLobby(){
 }
 renderAvatars();
 
+
 $('createBtn').onclick=async()=>{
- if(busy)return;busy=true;$('createBtn').disabled=true;
+ if(busy)return;
+ busy=true;
+ $('createBtn').disabled=true;
+
  try{
-  myName=$('hostName').value.trim();if(!myName)throw new Error('Digite seu nome.');
-  await setupFirebase();uid=firebase.auth().currentUser.uid;isHost=true;myAvatar='🌳';
+  myName=$('hostName').value.trim();
+  if(!myName)throw new Error('Digite seu nome.');
+
+  await setupFirebase();
+
+  const user=firebase.auth().currentUser;
+  if(!user)throw new Error('Não foi possível autenticar no Firebase.');
+
+  uid=user.uid;
+  isHost=true;
+  myAvatar='🌳';
+
   let ref,pin,found=false;
-  for(let n=0;n<10;n++){pin=makePin();ref=db.collection('rooms').doc(pin);const snap=await ref.get();if(!snap.exists){found=true;break}}
-  if(!found)throw new Error('Não foi possível gerar um PIN. Tente novamente.');
+
+  for(let n=0;n<10;n++){
+   pin=makePin();
+   ref=db.collection('rooms').doc(pin);
+   const snap=await ref.get();
+
+   if(!snap.exists){
+    found=true;
+    break;
+   }
+  }
+
+  if(!found)
+   throw new Error('Não foi possível gerar um PIN. Tente novamente.');
+
   roomId=pin;
-  await ref.set({hostUid:uid,status:'lobby',level:0,questionIndex:0,question:null,playerCount:1,createdAt:firebase.firestore.FieldValue.serverTimestamp()});
-  await ref.collection('players').doc(uid).set({uid,name:myName,avatar:myAvatar,score:0,answered:true,answerIndex:null,isHost:true});
+
+  await ref.set({
+   hostUid:uid,
+   status:'lobby',
+   level:0,
+   questionIndex:0,
+   question:null,
+   playerCount:1,
+   createdAt:firebase.firestore.FieldValue.serverTimestamp()
+  });
+
+  await ref.collection('players').doc(uid).set({
+   uid,
+   name:myName,
+   avatar:myAvatar,
+   score:0,
+   answered:true,
+   answerIndex:null,
+   isHost:true
+  });
+
   enterLobby();
- }catch(e){msg(e.message)}finally{busy=false;$('createBtn').disabled=false}
+
+ }catch(e){
+  msg((e.code ? e.code+': ' : '')+e.message);
+  console.error('Erro ao criar sala:',e);
+ }finally{
+  busy=false;
+  $('createBtn').disabled=false;
+ }
 };
 $('joinBtn').onclick=async()=>{
  if(busy)return;busy=true;$('joinBtn').disabled=true;
