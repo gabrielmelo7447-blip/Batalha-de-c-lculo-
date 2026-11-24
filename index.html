@@ -194,7 +194,7 @@ function startQuestionClock(){
   const elapsed=Math.floor((Date.now()-started)/1000);
   seconds=Math.max(0,60-elapsed);
   $('timer').textContent=seconds+'s';
-  $('timerBar').style.width=(seconds/20*100)+'%';
+  $('timerBar').style.width=(seconds/60*100)+'%';
   if(seconds<=0){
    clearInterval(questionTimer);
    if(!isHost&&!hasAnswered)submitAnswer(-1);
