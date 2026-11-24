@@ -335,8 +335,8 @@ function renderPodium(){
 
  const top=podium.slice(0,3);
 
- const ranks=['second','first','third'];
- const medals=['🥈','🥇','🥉'];
+ const ranks=['first','second','third'];
+const medals=['🥇','🥈','🥉'];
 
  $('podium').innerHTML=top.map((p,i)=>
   `<div class="pod ${ranks[i]||''}">
