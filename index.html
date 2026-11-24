@@ -43,33 +43,73 @@
 'use strict';
 const $ = id => document.getElementById(id);
 const avatars = ['🌳','🌲','🌴','🌿','🍃','🦜','🐆','🦋','🐸','🦎','🦉','🐢','🦥','🐝','🌱','🍄','🪵','🌺'];
-const levels = [
- {name:'Explorador',desc:'Fundamentos',questions:[
-  ['Uma área de 2 hectares corresponde a quantos metros quadrados?',['2.000 m²','20.000 m²','200.000 m²','2.000.000 m²'],1],
-  ['Uma muda cresce 30 cm em 6 meses. Qual o crescimento médio mensal?',['3 cm','5 cm','6 cm','10 cm'],1],
-  ['Um terreno retangular mede 100 m por 50 m. Qual sua área?',['500 m²','1.500 m²','5.000 m²','50.000 m²'],2],
-  ['Em uma escala 1:10.000, 1 cm no mapa representa:',['10 m','100 m','1.000 m','10.000 m'],1]
- ]},
- {name:'Técnico',desc:'Aplicações',questions:[
-  ['Um talhão de 4 ha terá espaçamento de 3 m × 2 m. Aproximadamente quantas mudas serão necessárias?',['3.333','6.667','10.000','20.000'],2],
-  ['Uma parcela de 20 m × 25 m possui área de:',['250 m²','400 m²','500 m²','1.000 m²'],2],
-  ['Em um inventário, foram medidos 12, 15, 18, 15 e 20 cm de DAP. Qual é a média?',['15 cm','16 cm','17 cm','18 cm'],1],
-  ['Uma área de 12 ha teve 25% desmatados. Quantos hectares foram desmatados?',['2 ha','3 ha','4 ha','6 ha'],1]
- ]},
- {name:'Engenheiro',desc:'Cálculo florestal',questions:[
-  ['Uma árvore tem DAP de 40 cm. Usando π = 3,14, qual sua área basal aproximada?',['0,0628 m²','0,1256 m²','0,5024 m²','1,256 m²'],1],
-  ['Um povoamento possui 500 árvores/ha e volume médio de 0,8 m³ por árvore. Qual o volume por hectare?',['40 m³','200 m³','400 m³','800 m³'],2],
-  ['Uma parcela de 500 m² apresentou 2,5 m³ de madeira. Qual o volume extrapolado por hectare?',['25 m³/ha','40 m³/ha','50 m³/ha','100 m³/ha'],2],
-  ['Uma árvore possui altura comercial de 18 m e área basal de 0,08 m². Pelo fator de forma 0,7, qual o volume?',['0,504 m³','1,008 m³','1,44 m³','2,016 m³'],1]
- ]},
- {name:'Especialista',desc:'Desafio avançado',questions:[
-  ['Em uma amostra de 0,1 ha foram contadas 23 árvores. Qual a densidade estimada por hectare?',['23','115','230','2.300'],2],
-  ['Uma floresta tem volume inicial de 240 m³/ha. Após exploração, restam 156 m³/ha. Qual percentual do volume foi retirado?',['25%','30%','35%','40%'],2],
-  ['O DAP de uma árvore é 30 cm e sua altura é 20 m. Com π=3,14 e fator de forma 0,65, estime o volume.',['0,459 m³','0,918 m³','1,413 m³','2,827 m³'],1],
-  ['Uma área de 18 ha será dividida em parcelas de 30 m × 20 m. Quantas parcelas cabem na área, sem considerar bordas?',['150','250','300','350'],2]
- ]}
-];
 
+const levels = [
+ {
+  name:'Explorador',
+  desc:'Fundamentos • Fácil',
+  questions:[
+   ['Uma área de 2 hectares corresponde a quantos metros quadrados?',['2.000 m²','20.000 m²','200.000 m²','2.000.000 m²'],1],
+   ['Uma muda cresce 30 cm em 6 meses. Qual o crescimento médio mensal?',['3 cm','5 cm','6 cm','10 cm'],1],
+   ['Um terreno retangular mede 100 m por 50 m. Qual sua área?',['500 m²','1.500 m²','5.000 m²','50.000 m²'],2],
+   ['Em uma escala 1:10.000, 1 cm no mapa representa:',['10 m','100 m','1.000 m','10.000 m'],1],
+   ['Quantos metros quadrados existem em 1 hectare?',['100 m²','1.000 m²','10.000 m²','100.000 m²'],2],
+   ['Uma floresta possui 80 árvores e 25% delas foram plantadas recentemente. Quantas são?',['10','15','20','25'],2],
+   ['Um terreno tem 20 m de largura e 30 m de comprimento. Qual é sua área?',['100 m²','300 m²','500 m²','600 m²'],3],
+   ['Se uma muda custa R$ 2,00, quanto custam 50 mudas?',['R$ 50,00','R$ 80,00','R$ 100,00','R$ 120,00'],2],
+   ['Um trabalhador planta 40 mudas por hora. Quantas planta em 3 horas?',['80','100','120','140'],2],
+   ['Um talhão tem 1 hectare. Quantos hectares correspondem a 5 talhões iguais?',['2 ha','3 ha','4 ha','5 ha'],3]
+  ]
+ },
+ {
+  name:'Técnico',
+  desc:'Aplicações • Intermediária',
+  questions:[
+   ['Um talhão de 4 ha terá espaçamento de 3 m × 2 m. Aproximadamente quantas mudas serão necessárias?',['3.333','6.667','10.000','20.000'],2],
+   ['Uma parcela de 20 m × 25 m possui área de:',['250 m²','400 m²','500 m²','1.000 m²'],2],
+   ['Em um inventário, foram medidos 12, 15, 18, 15 e 20 cm de DAP. Qual é a média?',['15 cm','16 cm','17 cm','18 cm'],1],
+   ['Uma área de 12 ha teve 25% desmatados. Quantos hectares foram desmatados?',['2 ha','3 ha','4 ha','6 ha'],1],
+   ['Uma equipe planta 600 mudas por dia. Quantas mudas plantará em 8 dias?',['3.600','4.200','4.800','5.400'],2],
+   ['Um terreno de 5 ha será dividido em partes iguais de 1.000 m². Quantas partes serão formadas?',['25','40','50','100'],2],
+   ['Uma área possui 2.400 mudas distribuídas igualmente em 4 hectares. Qual a quantidade por hectare?',['400','500','600','800'],2],
+   ['Um viveiro produziu 2.000 mudas, mas 10% não sobreviveram. Quantas sobreviveram?',['1.600','1.700','1.800','1.900'],2],
+   ['Em um espaçamento de 4 m × 2,5 m, qual é a área ocupada por cada árvore?',['6 m²','8 m²','10 m²','12 m²'],2],
+   ['Uma estrada florestal de 2,5 km corresponde a quantos metros?',['250 m','1.500 m','2.000 m','2.500 m'],3]
+  ]
+ },
+ {
+  name:'Engenheiro',
+  desc:'Cálculo florestal • Difícil',
+  questions:[
+   ['Uma árvore tem DAP de 40 cm. Usando π = 3,14, qual sua área basal aproximada?',['0,0628 m²','0,1256 m²','0,5024 m²','1,256 m²'],1],
+   ['Um povoamento possui 500 árvores/ha e volume médio de 0,8 m³ por árvore. Qual o volume por hectare?',['40 m³','200 m³','400 m³','800 m³'],2],
+   ['Uma parcela de 500 m² apresentou 2,5 m³ de madeira. Qual o volume extrapolado por hectare?',['25 m³/ha','40 m³/ha','50 m³/ha','100 m³/ha'],2],
+   ['Uma árvore possui altura comercial de 18 m e área basal de 0,08 m². Pelo fator de forma 0,7, qual o volume?',['0,504 m³','1,008 m³','1,44 m³','2,016 m³'],1],
+   ['Um inventário encontrou 120 árvores em 0,2 ha. Qual a densidade estimada por hectare?',['300','400','600','800 árvores/ha'],2],
+   ['Uma árvore possui DAP de 50 cm. Usando π = 3,14, qual sua área basal aproximada?',['0,0963 m²','0,1963 m²','0,2500 m²','0,7850 m²'],1],
+   ['Um povoamento tem 300 árvores/ha, com volume médio de 1,5 m³ por árvore. Qual o volume total por hectare?',['300 m³','350 m³','450 m³','500 m³'],2],
+   ['Uma parcela de 400 m² apresentou 4 m³ de madeira. Qual o volume estimado por hectare?',['40 m³/ha','80 m³/ha','100 m³/ha','120 m³/ha'],2],
+   ['Uma árvore tem área basal de 0,10 m², altura comercial de 15 m e fator de forma 0,6. Qual o volume estimado?',['0,60 m³','0,90 m³','1,20 m³','1,50 m³'],1],
+   ['Uma floresta possui volume de 250 m³/ha em uma área de 8 ha. Qual o volume total estimado?',['1.000 m³','1.500 m³','2.000 m³','2.500 m³'],2]
+  ]
+ },
+ {
+  name:'Especialista',
+  desc:'Desafio avançado • Muito difícil',
+  questions:[
+   ['Em uma amostra de 0,1 ha foram contadas 23 árvores. Qual a densidade estimada por hectare?',['23','115','230','2.300'],2],
+   ['Uma floresta tem volume inicial de 240 m³/ha. Após exploração, restam 156 m³/ha. Qual percentual do volume foi retirado?',['25%','30%','35%','40%'],2],
+   ['O DAP de uma árvore é 30 cm e sua altura é 20 m. Com π=3,14 e fator de forma 0,65, estime o volume.',['0,459 m³','0,918 m³','1,413 m³','2,827 m³'],1],
+   ['Uma área de 18 ha será dividida em parcelas de 30 m × 20 m. Quantas parcelas cabem na área, sem considerar bordas?',['150','250','300','350'],2],
+   ['Uma amostra de 25 árvores apresentou volume médio de 0,8 m³ por árvore. Qual o volume total da amostra?',['10 m³','15 m³','20 m³','25 m³'],2],
+   ['Uma floresta possui 180 m³/ha em 12 ha. Após o manejo, houve redução de 20% no volume. Quanto restou no total?',['1.440 m³','1.620 m³','1.728 m³','1.800 m³'],2],
+   ['Uma parcela de 0,25 ha apresentou 75 árvores. Qual a densidade estimada por hectare?',['150','200','300','400 árvores/ha'],2],
+   ['Uma árvore tem DAP de 60 cm, altura de 25 m e fator de forma 0,7. Usando π = 3,14, qual o volume aproximado?',['2,47 m³','3,14 m³','4,95 m³','7,07 m³'],2],
+   ['Um inventário estimou média de 120 m³/ha em 15 ha. Se o volume total aumentar 12%, qual será o novo volume total?',['1.680 m³','1.800 m³','2.016 m³','2.160 m³'],2],
+   ['Uma área de 20 ha foi amostrada com parcelas de 0,5 ha. Foram instaladas 8 parcelas, com volume médio de 45 m³ por parcela. Qual a estimativa de volume por hectare?',['45 m³/ha','60 m³/ha','90 m³/ha','120 m³/ha'],2]
+  ]
+ }
+];
 let db, uid, roomId = null, isHost = false, myName = '', myAvatar = avatars[0];
 let unsubs = [], currentRoom = null, selectedLevel = 0, questionTimer = null;
 let seconds = 20, hasAnswered = false, hostPlayers = [], lastRenderedQuestion = -1;
