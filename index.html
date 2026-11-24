@@ -192,7 +192,7 @@ function startQuestionClock(){
  const started=currentRoom.questionStartedAt?.toMillis ? currentRoom.questionStartedAt.toMillis() : Date.now();
  function tick(){
   const elapsed=Math.floor((Date.now()-started)/1000);
-  seconds=Math.max(0,20-elapsed);
+  seconds=Math.max(0,60-elapsed);
   $('timer').textContent=seconds+'s';
   $('timerBar').style.width=(seconds/20*100)+'%';
   if(seconds<=0){
