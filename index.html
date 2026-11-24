@@ -181,14 +181,195 @@ function listenPlayers(){
 function renderPlayers(){
  $('lobbyPlayers').innerHTML=hostPlayers.map(p=>`<div class="playerchip"><span>${p.avatar||'🌳'}</span><b>${esc(p.name)}${p.id===currentRoom?.hostUid?' (anfitrião)':''}</b></div>`).join('');
 }
+ function renderQuestion(){
+ if(!currentRoom || currentRoom.status!=='playing') return;
+
+ const levelIndex=Number(currentRoom.level)||0;
+ const questionIndex=Number(currentRoom.questionIndex)||0;
+ const q=currentRoom.question;
+
+ if(!q || !Array.isArray(q.options)) return;
+
+ const questionKey=levelIndex+'-'+questionIndex;
+
+ $('phaseLabel').textContent='FASE '+(levelIndex+1);
+ $('levelLabel').textContent=levels[levelIndex]?.name||'NÍVEL';
+ $('questionNumber').textContent='QUESTÃO '+(questionIndex+1);
+ $('questionText').textContent=q.text||'';
+
+ $('answerGrid').innerHTML=q.options.map((option,i)=>
+  `<button class="answer" data-answer="${i}">
+    ${String.fromCharCode(65+i)}. ${esc(option)}
+  </button>`
+ ).join('');
+
+ $('answerNotice').classList.add('hidden');
+ $('answerNotice').textContent='';
+ $('hostGameControls').classList.toggle('hidden',!isHost);
+ $('nextBtn').disabled=true;
+ $('allAnswered').classList.add('hidden');
+ $('timeExpired').classList.add('hidden');
+
+ hasAnswered=false;
+
+ if(lastRenderedQuestion!==questionKey){
+  lastRenderedQuestion=questionKey;
+
+  if(questionTimer)clearInterval(questionTimer);
+
+  const start=currentRoom.questionStartedAt?.toMillis?.()||Date.now();
+
+  const updateClock=()=>{
+   seconds=Math.max(0,60-Math.floor((Date.now()-start)/1000));
+
+   $('timer').textContent=seconds+'s';
+   $('timerBar').style.width=(seconds/60*100)+'%';
+
+   if(seconds<=0){
+    if(questionTimer)clearInterval(questionTimer);
+    $('timeExpired').classList.remove('hidden');
+    renderHostStatus();
+   }
+  };
+
+  updateClock();
+  questionTimer=setInterval(updateClock,250);
+ }
+
+ document.querySelectorAll('.answer').forEach(button=>button.onclick=async()=>{
+  if(isHost||hasAnswered||seconds<=0)return;
+
+  const answerIndex=Number(button.dataset.answer);
+
+  hasAnswered=true;
+  document.querySelectorAll('.answer').forEach(b=>b.disabled=true);
+  button.classList.add('chosen');
+
+  try{
+   await playerRef().update({
+    answered:true,
+    answerIndex
+   });
+
+   $('answerNotice').textContent='Resposta enviada! Aguarde os demais jogadores.';
+   $('answerNotice').classList.remove('hidden');
+
+  }catch(e){
+   hasAnswered=false;
+
+   $('answerNotice').textContent='Não foi possível enviar sua resposta: '+e.message;
+   $('answerNotice').classList.remove('hidden');
+
+   document.querySelectorAll('.answer').forEach(b=>b.disabled=false);
+  }
+ });
+
+ if(!isHost){
+  playerRef().get().then(s=>{
+   if(s.exists&&s.data().answered){
+    hasAnswered=true;
+
+    document.querySelectorAll('.answer').forEach(b=>b.disabled=true);
+
+    const chosen=s.data().answerIndex;
+
+    if(chosen!==null&&chosen!==undefined){
+     document.querySelector(`.answer[data-answer="${chosen}"]`)
+      ?.classList.add('chosen');
+    }
+
+    $('answerNotice').textContent='Resposta registrada! Aguarde o anfitrião avançar.';
+    $('answerNotice').classList.remove('hidden');
+   }
+  }).catch(console.error);
+ }
+
+ renderHostStatus();
+}
+
+
+function renderHostStatus(){
+ if(!isHost||currentRoom?.status!=='playing')return;
+
+ const players=hostPlayers.filter(p=>!p.isHost);
+ const answered=players.filter(p=>p.answered).length;
+
+ $('answeredCount').textContent=answered;
+ $('pendingCount').textContent=Math.max(0,players.length-answered);
+ $('gamePlayerCount').textContent=hostPlayers.length;
+
+ $('allAnswered').classList.toggle(
+  'hidden',
+  players.length===0||answered<players.length
+ );
+
+ $('timeExpired').classList.toggle('hidden',seconds>0);
+
+ $('nextBtn').disabled=
+  seconds>0&&(players.length===0||answered<players.length);
+
+ $('hostBoard').innerHTML=[...hostPlayers]
+  .sort((a,b)=>(b.score||0)-(a.score||0))
+  .map((p,i)=>
+   `<div class="boardrow">
+    <span>${i+1}. ${p.avatar||'🌳'} ${esc(p.name)}</span>
+    <strong>${p.score||0} pts</strong>
+   </div>`
+  ).join('');
+}
+
+
+function renderPodium(){
+ const podium=Array.isArray(currentRoom?.finalPodium)
+  ?currentRoom.finalPodium:[];
+
+ const top=podium.slice(0,3);
+
+ const ranks=['second','first','third'];
+ const medals=['🥈','🥇','🥉'];
+
+ $('podium').innerHTML=top.map((p,i)=>
+  `<div class="pod ${ranks[i]||''}">
+    <div class="medal">${medals[i]||''}</div>
+    ${p.avatar||'🌳'}
+    <strong>${esc(p.name)}</strong>
+    <span>${p.score||0} pts</span>
+   </div>`
+ ).join('');
+
+ $('finalBoard').innerHTML=podium.map((p,i)=>
+  `<div class="boardrow">
+    <span>${i+1}. ${p.avatar||'🌳'} ${esc(p.name)}</span>
+    <strong>${p.score||0} pts</strong>
+   </div>`
+ ).join('');
+
+ show('podiumScreen');
+}
+
+
 function renderRoom(){
  if(!currentRoom)return;
- $('lobbyStatus').textContent=currentRoom.status==='playing'?'Em andamento':'Aguardando';
+
+ $('lobbyStatus').textContent=
+  currentRoom.status==='playing'
+   ?'Em andamento'
+   :currentRoom.status==='finished'
+    ?'Finalizada'
+    :'Aguardando';
+
  if(currentRoom.status==='playing'){
   show('game');
   renderQuestion();
+
+ }else if(currentRoom.status==='finished'){
+  if(questionTimer)clearInterval(questionTimer);
+  renderPodium();
+
+ }else if(!isHost){
+  show('lobby');
  }
-}
+  }
 function renderLevels(){
  $('levelButtons').innerHTML=levels.map((l,i)=>`<button class="level ${i===selectedLevel?'active':''}" data-level="${i}"><b>${i+1}. ${l.name}</b><small>${l.desc}</small></button>`).join('');
  document.querySelectorAll('.level').forEach(b=>b.onclick=()=>{
