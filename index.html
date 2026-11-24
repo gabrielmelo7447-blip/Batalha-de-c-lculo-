@@ -43,8 +43,7 @@
 'use strict';
 const $ = id => document.getElementById(id);
 const avatars = ['🌳','🌲','🌴','🌿','🍃','🦜','🐆','🦋','🐸','🦎','🦉','🐢','🦥','🐝','🌱','🍄','🪵','🌺'];
-
-const levels = [
+ const levels = [
  {
   name:'Explorador',
   desc:'Fundamentos • Fácil',
@@ -104,34 +103,57 @@ const levels = [
    ['Uma amostra de 25 árvores apresentou volume médio de 0,8 m³ por árvore. Qual o volume total da amostra?',['10 m³','15 m³','20 m³','25 m³'],2],
    ['Uma floresta possui 180 m³/ha em 12 ha. Após o manejo, houve redução de 20% no volume. Quanto restou no total?',['1.440 m³','1.620 m³','1.728 m³','1.800 m³'],2],
    ['Uma parcela de 0,25 ha apresentou 75 árvores. Qual a densidade estimada por hectare?',['150','200','300','400 árvores/ha'],2],
-   ['Uma árvore tem DAP de 60 cm, altura de 25 m e fator de forma 0,7. Usando π = 3,14, qual o volume aproximado?',['2,47 m³','3,14 m³','4,95 m³','7,07 m³'],2],
+   ['Uma árvore tem DAP de 60 cm, altura de 25 m e fator de forma de 0,7. Usando π = 3,14, qual o volume aproximado?',['2,47 m³','3,14 m³','4,95 m³','7,07 m³'],2],
    ['Um inventário estimou média de 120 m³/ha em 15 ha. Se o volume total aumentar 12%, qual será o novo volume total?',['1.680 m³','1.800 m³','2.016 m³','2.160 m³'],2],
    ['Uma área de 20 ha foi amostrada com parcelas de 0,5 ha. Foram instaladas 8 parcelas, com volume médio de 45 m³ por parcela. Qual a estimativa de volume por hectare?',['45 m³/ha','60 m³/ha','90 m³/ha','120 m³/ha'],2]
   ]
  }
 ];
-let db, uid, roomId = null, isHost = false, myName = '', myAvatar = avatars[0];
+ let db, uid, roomId = null, isHost = false, myName = '', myAvatar = avatars[0];
 let unsubs = [], currentRoom = null, selectedLevel = 0, questionTimer = null;
 let seconds = 60, hasAnswered = false, hostPlayers = [], lastRenderedQuestion = -1;
 let busy = false;
 
-function show(id){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));$(id).classList.add('active')}
-function msg(t){$('homeMsg').textContent=t;$('homeMsg').classList.remove('hidden')}
-function esc(s){return String(s||'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
-function clearSubs(){unsubs.forEach(fn=>{try{fn()}catch(e){}});unsubs=[];if(questionTimer)clearInterval(questionTimer)}
+function show(id){
+ document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+ $(id).classList.add('active');
+}
+function msg(t){
+ $('homeMsg').textContent=t;
+ $('homeMsg').classList.remove('hidden');
+}
+function esc(s){
+ return String(s||'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+}
+function clearSubs(){
+ unsubs.forEach(fn=>{try{fn()}catch(e){}});
+ unsubs=[];
+ if(questionTimer)clearInterval(questionTimer);
+}
 function setupFirebase(){
  if(!window.FIREBASE_CONFIG || !FIREBASE_CONFIG.apiKey) throw new Error('O arquivo firebase-config.js não está configurado.');
  if(!firebase.apps.length) firebase.initializeApp(FIREBASE_CONFIG);
  db=firebase.firestore();
  return firebase.auth().signInAnonymously();
 }
-function makePin(){return String(Math.floor(100000+Math.random()*900000))}
-function roomRef(){return db.collection('rooms').doc(roomId)}
-function playerRef(id=uid){return roomRef().collection('players').doc(id)}
+function makePin(){
+ return String(Math.floor(100000+Math.random()*900000));
+}
+function roomRef(){
+ return db.collection('rooms').doc(roomId);
+}
+function playerRef(id=uid){
+ return roomRef().collection('players').doc(id);
+}
 function listenRoom(){
  unsubs.push(roomRef().onSnapshot(s=>{
-  if(!s.exists){msg('A sala foi encerrada ou não existe mais.');show('home');return}
-  currentRoom=s.data();renderRoom();
+  if(!s.exists){
+   msg('A sala foi encerrada ou não existe mais.');
+   show('home');
+   return;
+  }
+  currentRoom=s.data();
+  renderRoom();
  },e=>msg('Erro ao acompanhar a sala: '+e.message)));
 }
 function listenPlayers(){
@@ -148,92 +170,35 @@ function renderPlayers(){
 }
 function renderRoom(){
  if(!currentRoom)return;
- $('roomPin').textContent=roomId;
- $('lobbyStatus').textContent=currentRoom.status==='playing'?'Em jogo':currentRoom.status==='finished'?'Finalizada':'Aguardando';
- if(currentRoom.status==='lobby'){show('lobby');return}
+ $('lobbyStatus').textContent=currentRoom.status==='playing'?'Em andamento':'Aguardando';
  if(currentRoom.status==='playing'){
   show('game');
-  if(lastRenderedQuestion!==currentRoom.questionIndex){
-   lastRenderedQuestion=currentRoom.questionIndex;hasAnswered=false;renderQuestion();
-  }
+  renderQuestion();
  }
- if(currentRoom.status==='finished'){if(questionTimer)clearInterval(questionTimer);show('podiumScreen');renderPodium()}
-}
-function renderHostStatus(){
- const participants=hostPlayers.filter(p=>p.id!==currentRoom?.hostUid);
- const total=participants.length;
- const answered=participants.filter(p=>p.answered===true).length;
- const allDone=total>0 && answered===total;
- const expired=seconds<=0;
- $('answeredCount').textContent=answered;
- $('pendingCount').textContent=Math.max(0,total-answered);
- $('allAnswered').classList.toggle('hidden',!allDone);
- $('timeExpired').classList.toggle('hidden',!expired);
- $('nextBtn').disabled=!(allDone||expired);
- $('hostBoard').innerHTML=[...hostPlayers].sort((a,b)=>(b.score||0)-(a.score||0)).map((p,i)=>`<div class="boardrow"><span>${i+1}. ${p.avatar||'🌳'} ${esc(p.name)}${p.id===currentRoom?.hostUid?' · anfitrião':''}</span><b>${p.score||0} pts</b></div>`).join('');
-}
-function renderQuestion(){
- if(!currentRoom?.question)return;
- const q=currentRoom.question;
- $('phaseLabel').textContent=`FASE ${currentRoom.level+1} • ${levels[currentRoom.level].name}`;
- $('levelLabel').textContent=levels[currentRoom.level].desc;
- $('questionNumber').textContent=`QUESTÃO ${currentRoom.questionIndex+1} DE ${levels[currentRoom.level].questions.length}`;
- $('questionText').textContent=q.text;
- $('answerGrid').innerHTML=q.options.map((a,i)=>`<button class="answer" data-i="${i}" ${hasAnswered||isHost?'disabled':''}>${String.fromCharCode(65+i)}. ${esc(a)}</button>`).join('');
- document.querySelectorAll('.answer').forEach(b=>b.addEventListener('click',()=>submitAnswer(Number(b.dataset.i))));
- $('hostGameControls').classList.toggle('hidden',!isHost);
- $('answerNotice').classList.toggle('hidden',isHost||!hasAnswered);
- $('answerNotice').textContent=hasAnswered?'✅ Resposta enviada! Aguarde os outros jogadores e o anfitrião.':'';
- startQuestionClock();
- if(isHost)renderHostStatus();
-}
-function startQuestionClock(){
- if(questionTimer)clearInterval(questionTimer);
- const started=currentRoom.questionStartedAt?.toMillis ? currentRoom.questionStartedAt.toMillis() : Date.now();
- function tick(){
-  const elapsed=Math.floor((Date.now()-started)/1000);
-  seconds=Math.max(0,60-elapsed);
-  $('timer').textContent=seconds+'s';
-  $('timerBar').style.width=(seconds/60*100)+'%';
-  if(seconds<=0){
-   clearInterval(questionTimer);
-   if(!isHost&&!hasAnswered)submitAnswer(-1);
-   if(isHost)renderHostStatus();
-  }
- }
- tick();questionTimer=setInterval(tick,500);
-}
-async function submitAnswer(i){
- if(hasAnswered||isHost||seconds<=0)return;
- hasAnswered=true;
- document.querySelectorAll('.answer').forEach(b=>{b.disabled=true;if(Number(b.dataset.i)===i)b.classList.add('chosen')});
- $('answerNotice').classList.remove('hidden');
- $('answerNotice').textContent='Enviando sua resposta...';
- try{
-  await playerRef().update({answered:true,answerIndex:i,answeredAt:firebase.firestore.FieldValue.serverTimestamp()});
-  $('answerNotice').textContent='✅ Resposta enviada! Aguarde o anfitrião.';
- }catch(e){hasAnswered=false;$('answerNotice').textContent='Não foi possível enviar. Verifique sua conexão.';console.error(e)}
-}
-function renderPodium(){
- const source=currentRoom?.finalPodium||hostPlayers;
- const sorted=[...source].sort((a,b)=>(b.score||0)-(a.score||0));
- const top=sorted.slice(0,3),medals=['🥇','🥈','🥉'];
- $('podium').innerHTML=[1,0,2].map(i=>{const p=top[i];return p?`<div class="pod ${i===0?'first':i===1?'second':'third'}"><div class="medal">${medals[i]}</div><strong>${esc(p.name)}</strong>${p.score||0} pts</div>`:''}).join('');
- $('finalBoard').innerHTML=sorted.map((p,i)=>`<div class="boardrow"><span>${i+1}. ${p.avatar||'🌳'} ${esc(p.name)}</span><b>${p.score||0} pts</b></div>`).join('');
 }
 function renderLevels(){
  $('levelButtons').innerHTML=levels.map((l,i)=>`<button class="level ${i===selectedLevel?'active':''}" data-level="${i}"><b>${i+1}. ${l.name}</b><small>${l.desc}</small></button>`).join('');
- document.querySelectorAll('.level').forEach(b=>b.onclick=()=>{selectedLevel=Number(b.dataset.level);renderLevels()});
+ document.querySelectorAll('.level').forEach(b=>b.onclick=()=>{
+  selectedLevel=Number(b.dataset.level);
+  renderLevels();
+ });
 }
 function renderAvatars(){
  $('avatarGrid').innerHTML=avatars.map((a,i)=>`<button class="avatar ${i===0?'selected':''}" data-a="${a}">${a}</button>`).join('');
- document.querySelectorAll('.avatar').forEach(b=>b.onclick=()=>{myAvatar=b.dataset.a;document.querySelectorAll('.avatar').forEach(x=>x.classList.toggle('selected',x===b))});
+ document.querySelectorAll('.avatar').forEach(b=>b.onclick=()=>{
+  myAvatar=b.dataset.a;
+  document.querySelectorAll('.avatar').forEach(x=>x.classList.toggle('selected',x===b));
+ });
 }
 function enterLobby(){
- show('lobby');$('rolePill').textContent=isHost?'ANFITRIÃO':'JOGADOR';
- $('hostControls').classList.toggle('hidden',!isHost);$('waitingText').classList.toggle('hidden',isHost);
- $('roomPin').textContent=roomId;if(isHost)renderLevels();
- listenRoom();listenPlayers();
+ show('lobby');
+ $('rolePill').textContent=isHost?'ANFITRIÃO':'JOGADOR';
+ $('hostControls').classList.toggle('hidden',!isHost);
+ $('waitingText').classList.toggle('hidden',isHost);
+ $('roomPin').textContent=roomId;
+ if(isHost)renderLevels();
+ listenRoom();
+ listenPlayers();
  if(!isHost){
   unsubs.push(playerRef().onSnapshot(s=>{
    if(s.exists&&s.data().answered&&currentRoom?.status==='playing')hasAnswered=true;
@@ -242,43 +207,28 @@ function enterLobby(){
 }
 renderAvatars();
 
-
 $('createBtn').onclick=async()=>{
  if(busy)return;
  busy=true;
  $('createBtn').disabled=true;
-
  try{
   myName=$('hostName').value.trim();
   if(!myName)throw new Error('Digite seu nome.');
-
   await setupFirebase();
-
   const user=firebase.auth().currentUser;
   if(!user)throw new Error('Não foi possível autenticar no Firebase.');
-
   uid=user.uid;
   isHost=true;
   myAvatar='🌳';
-
   let ref,pin,found=false;
-
   for(let n=0;n<10;n++){
    pin=makePin();
    ref=db.collection('rooms').doc(pin);
    const snap=await ref.get();
-
-   if(!snap.exists){
-    found=true;
-    break;
-   }
+   if(!snap.exists){found=true;break;}
   }
-
-  if(!found)
-   throw new Error('Não foi possível gerar um PIN. Tente novamente.');
-
+  if(!found)throw new Error('Não foi possível gerar um PIN. Tente novamente.');
   roomId=pin;
-
   await ref.set({
    hostUid:uid,
    status:'lobby',
@@ -288,7 +238,6 @@ $('createBtn').onclick=async()=>{
    playerCount:1,
    createdAt:firebase.firestore.FieldValue.serverTimestamp()
   });
-
   await ref.collection('players').doc(uid).set({
    uid,
    name:myName,
@@ -298,9 +247,7 @@ $('createBtn').onclick=async()=>{
    answerIndex:null,
    isHost:true
   });
-
   enterLobby();
-
  }catch(e){
   msg((e.code ? e.code+': ' : '')+e.message);
   console.error('Erro ao criar sala:',e);
@@ -309,47 +256,101 @@ $('createBtn').onclick=async()=>{
   $('createBtn').disabled=false;
  }
 };
-$('joinBtn').onclick=async()=>{
- if(busy)return;busy=true;$('joinBtn').disabled=true;
+ $('joinBtn').onclick=async()=>{
+ if(busy)return;
+ busy=true;
+ $('joinBtn').disabled=true;
  try{
-  roomId=$('joinPin').value.trim();myName=$('playerName').value.trim();
+  roomId=$('joinPin').value.trim();
+  myName=$('playerName').value.trim();
   if(!/^\d{6}$/.test(roomId))throw new Error('Digite um PIN válido de 6 números.');
   if(!myName)throw new Error('Digite seu nome.');
-  await setupFirebase();uid=firebase.auth().currentUser.uid; ishos=false;
+  await setupFirebase();
+  uid=firebase.auth().currentUser.uid;
+  isHost=false;
   const snap=await roomRef().get();
   if(!snap.exists)throw new Error('Sala não encontrada. Confira o PIN.');
   if(snap.data().status!=='lobby')throw new Error('Essa partida já começou ou terminou.');
   if((snap.data().playerCount||0)>=36)throw new Error('Sala cheia! O limite é 36 jogadores.');
   show('avatarScreen');
- }catch(e){msg(e.message)}finally{busy=false;$('joinBtn').disabled=false}
+ }catch(e){
+  msg(e.message);
+ }finally{
+  busy=false;
+  $('joinBtn').disabled=false;
+ }
 };
+
 $('confirmAvatar').onclick=async()=>{
  try{
   const ref=roomRef();
   await db.runTransaction(async tx=>{
-   const roomSnap=await tx.get(ref);if(!roomSnap.exists)throw new Error('Sala não encontrada.');
-   const data=roomSnap.data();if(data.status!=='lobby')throw new Error('A partida já começou.');
+   const roomSnap=await tx.get(ref);
+   if(!roomSnap.exists)throw new Error('Sala não encontrada.');
+   const data=roomSnap.data();
+   if(data.status!=='lobby')throw new Error('A partida já começou.');
    if((data.playerCount||0)>=36)throw new Error('Sala cheia! Limite de 36 jogadores.');
    const player=ref.collection('players').doc(uid);
-   tx.set(player,{uid,name:myName,avatar:myAvatar,score:0,answered:false,answerIndex:null,isHost:false});
-   tx.update(ref,{playerCount:(data.playerCount||0)+1});
+   const playerSnap=await tx.get(player);
+   if(playerSnap.exists){
+    tx.set(player,{
+     uid,
+     name:myName,
+     avatar:myAvatar,
+     score:playerSnap.data().score||0,
+     answered:playerSnap.data().answered||false,
+     answerIndex:playerSnap.data().answerIndex??null,
+     isHost:false
+    },{merge:true});
+   }else{
+    tx.set(player,{
+     uid,
+     name:myName,
+     avatar:myAvatar,
+     score:0,
+     answered:false,
+     answerIndex:null,
+     isHost:false
+    });
+    tx.update(ref,{playerCount:(data.playerCount||0)+1});
+   }
   });
   enterLobby();
- }catch(e){alert('Erro ao entrar: '+e.message)}
+ }catch(e){
+  alert('Erro ao entrar: '+e.message);
+ }
 };
+
 $('startBtn').onclick=async()=>{
- if(!isHost||busy)return;busy=true;$('startBtn').disabled=true;
+ if(!isHost||busy)return;
+ busy=true;
+ $('startBtn').disabled=true;
  try{
   const q=levels[selectedLevel].questions[0],ref=roomRef();
   await ref.collection('private').doc('answer').set({correctIndex:q[2]});
-  await ref.update({status:'playing',level:selectedLevel,questionIndex:0,question:{text:q[0],options:q[1]},questionStartedAt:firebase.firestore.FieldValue.serverTimestamp()});
- }catch(e){alert('Não foi possível iniciar: '+e.message)}finally{busy=false;$('startBtn').disabled=false}
+  await ref.update({
+   status:'playing',
+   level:selectedLevel,
+   questionIndex:0,
+   question:{text:q[0],options:q[1]},
+   questionStartedAt:firebase.firestore.FieldValue.serverTimestamp()
+  });
+ }catch(e){
+  alert('Não foi possível iniciar: '+e.message);
+ }finally{
+  busy=false;
+  $('startBtn').disabled=false;
+ }
 };
+
 $('nextBtn').onclick=async()=>{
- if(!isHost||busy||$('nextBtn').disabled)return;busy=true;$('nextBtn').disabled=true;
+ if(!isHost||busy||$('nextBtn').disabled)return;
+ busy=true;
+ $('nextBtn').disabled=true;
  try{
   const ref=roomRef(),privateRef=ref.collection('private').doc('answer');
-  const key=await privateRef.get();if(!key.exists)throw new Error('Gabarito não encontrado.');
+  const key=await privateRef.get();
+  if(!key.exists)throw new Error('Gabarito não encontrado.');
   const correct=key.data().correctIndex;
   const snap=await ref.collection('players').get();
   const batch=db.batch();
@@ -362,17 +363,36 @@ $('nextBtn').onclick=async()=>{
   const next=currentRoom.questionIndex+1;
   if(next>=levels[currentRoom.level].questions.length){
    const finalSnap=await ref.collection('players').get();
-   const finalPodium=finalSnap.docs.map(d=>({name:d.data().name,avatar:d.data().avatar,score:d.data().score||0,isHost:d.data().isHost===true}))
-    .filter(p=>!p.isHost).sort((a,b)=>b.score-a.score);
+   const finalPodium=finalSnap.docs.map(d=>({
+    name:d.data().name,
+    avatar:d.data().avatar,
+    score:d.data().score||0,
+    isHost:d.data().isHost===true
+   }))
+    .filter(p=>!p.isHost)
+    .sort((a,b)=>b.score-a.score);
    await ref.update({status:'finished',finalPodium});
   }else{
    const q=levels[currentRoom.level].questions[next];
    await privateRef.set({correctIndex:q[2]});
-   await ref.update({questionIndex:next,question:{text:q[0],options:q[1]},questionStartedAt:firebase.firestore.FieldValue.serverTimestamp()});
+   await ref.update({
+    questionIndex:next,
+    question:{text:q[0],options:q[1]},
+    questionStartedAt:firebase.firestore.FieldValue.serverTimestamp()
+   });
   }
- }catch(e){alert('Não foi possível avançar: '+e.message);console.error(e)}finally{busy=false}
+ }catch(e){
+  alert('Não foi possível avançar: '+e.message);
+  console.error(e);
+ }finally{
+  busy=false;
+ }
 };
-$('homeBtn').onclick=()=>{clearSubs();location.reload()};
+
+$('homeBtn').onclick=()=>{
+ clearSubs();
+ location.reload();
+};
 window.addEventListener('beforeunload',clearSubs);
 </script>
 </body>
